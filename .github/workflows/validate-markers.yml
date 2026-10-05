@@ -1,0 +1,21 @@
+name: Validate README Markers
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-markers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Check for Activity Section Markers
+        run: |
+          if ! grep -q "<!--START_SECTION:activity-->" README.md || ! grep -q "<!--END_SECTION:activity-->" README.md; then
+            echo "Error: README.md is missing the required activity markers."
+            exit 1
+          fi
+          echo "Success: Markers found. Safe to merge."
